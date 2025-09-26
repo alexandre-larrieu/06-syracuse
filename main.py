@@ -1,99 +1,58 @@
-#### Fonctions secondaires
+"""Module Syracuse : Calcul et analyse de la suite de Syracuse."""
+import matplotlib.pyplot as plt
+
+def syracuse(n):
+    """Calcule la suite de Syracuse pour un entier positif n."""
+    if n <= 0:
+        raise ValueError("n doit être un entier strictement positif.")
+    suite = [n]
+    while n != 1:
+        if n % 2 == 0:
+            n = n // 2
+        else:
+            n = 3 * n + 1
+        suite.append(n)
+    return suite
 
 
-# imports
-from plotly.graph_objects import Scatter, Figure
-
-### NE PAS MODIFIER ###
-def syr_plot(lsyr):
-    title = "Syracuse" + " (n = " + str(lsyr[0]) + " )"
-    fig = Figure({  'layout':   { 'title': {'text': title},
-                                'xaxis': {'title': {'text':"x"}},
-                                'yaxis': {'title': {'text':"y"}},
-                                }
-                }
-    )
-
-    x = [ i for i in range(len(lsyr)) ]
-    t = Scatter(x=x, y=lsyr, mode="lines+markers", marker_color = "blue")
-    fig.add_trace(t)
-    fig.show()
-    # fig.write_html('fig.html', include_plotlyjs='cdn')
-    return None
-#######################
-
-def syracuse_l(n):
-    """retourne la suite de Syracuse de source n
-
-    Args:
-        n (int): la source de la suite
-
-    Returns:
-        list: la suite de Syracuse de source n
-    """
-
-    # votre code ici 
-    l = [ ]
-    return l
-
-def temps_de_vol(l):
-    """Retourne le temps de vol d'une suite de Syracuse
-
-    Args:
-        l (list): la suite de Syracuse
-
-    Returns:
-        int: le temps de vol
-    """
-    
-    # votre code ici
-
-    n = 0
-    return n
-
-def temps_de_vol_en_altitude(l):
-    """Retourne le temps de vol en altitude d'une suite de Syracuse
-
-    Args:
-        l (list): la suite de Syracuse
-
-    Returns:
-        int: le temps de vol en altitude
-    """
-
-    # votre code ici
-
-    n = 0
-    return n
+def temps_de_vol(suite):
+    """Retourne le temps de vol de la suite de Syracuse (nombre d'étapes pour atteindre 1)."""
+    return len(suite) - 1
 
 
-def altitude_maximale(l):
-    """retourne l'altitude maximale d'une suite de Syracuse
-
-    Args:
-        l (list): la suite de Syracuse
-
-    Returns:
-        int: l'altitude maximale
-    """
-    
-    # votre code ici
-    
-    n = 0
-    return n
+def temps_de_vol_en_altitude(suite):
+    """Retourne le temps de vol en altitude (nombre de termes consécutifs strictement supérieurs à l'altitude de départ)."""
+    altitude_depart = suite[0]
+    tva = 0
+    for valeur in suite[1:]:
+        if valeur > altitude_depart:
+            tva += 1
+        else:
+            break
+    return tva
 
 
-#### Fonction principale
+def altitude_maximale(suite):
+    """Retourne l'altitude maximale atteinte dans la suite de Syracuse."""
+    return max(suite)
 
 
 def main():
+    """Fonction principale : interaction utilisateur et affichage du graphique."""
+    n = int(input("Entrez un entier strictement positif : "))
+    suite = syracuse(n)
+    print("Suite de Syracuse :", suite)
+    print("Temps de vol :", temps_de_vol(suite))
+    print("Temps de vol en altitude :", temps_de_vol_en_altitude(suite))
+    print("Altitude maximale :", altitude_maximale(suite))
 
-    # vos appels à la fonction secondaire ici
-    lsyr = syracuse_l(15)
-    syr_plot(lsyr)
-    print(temps_de_vol(lsyr))
-    print(temps_de_vol_en_altitude(lsyr))
-    print(altitude_maximale(lsyr))
+    x_vals = list(range(len(suite)))
+    plt.plot(x_vals, suite, marker="o", linestyle="-", color="b")
+    plt.title(f"Suite de Syracuse pour n = {n}")
+    plt.xlabel("Étape")
+    plt.ylabel("Valeur")
+    plt.grid(True)
+    plt.show()
 
 
 if __name__ == "__main__":
